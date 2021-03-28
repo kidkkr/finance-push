@@ -1,0 +1,4 @@
+node_modules
+.serverless
+.env
+service_account_credentials.json

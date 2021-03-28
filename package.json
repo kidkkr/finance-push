@@ -1,0 +1,25 @@
+{
+  "name": "finance-push",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kidkkr/finance-push.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kidkkr/finance-push/issues"
+  },
+  "homepage": "https://github.com/kidkkr/finance-push#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "googleapis": "^68.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "serverless": "^2.31.0"
+  }
+}
