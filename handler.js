@@ -3,27 +3,31 @@
 const { getAuthToken, getSpreadSheetValues } = require("./lib.js");
 const fetch = require("isomorphic-fetch");
 
-module.exports.financePush = async (event) => {
+function formatValues(values) {
+  return values
+    .map(([name, _, price, change]) => `[${name}]\n${price}\n${change}$`)
+    .join("\n\n");
+}
+
+module.exports.financePush = async () => {
   try {
+    // Get finance data from Google Sheets
     const auth = await getAuthToken();
     const { data } = await getSpreadSheetValues({
       auth,
       spreadsheetId: process.env.SPREADSHEET_ID,
       sheetName: process.env.SHEET_NAME,
     });
-    const message = data.values
-      .slice(1)
-      .map(([name, _, price, change]) => `[${name}]\n${price}\n${change}$`)
-      .join("\n\n");
+
+    if (!data || !data.values || data.values.length < 2)
+      throw new Error("No data fetched");
 
     const reqBody = {
       user: process.env.PUSHOVER_USER,
       token: process.env.PUSHOVER_TOKEN,
-      message,
+      message: formatValues(data.values.slice(1)),
     };
-
-    console.log(JSON.stringify(reqBody, null, "\n"));
-
+    // Send to Pushover
     await fetch("https://api.pushover.net/1/messages.json", {
       method: "POST",
       headers: {
@@ -31,7 +35,6 @@ module.exports.financePush = async (event) => {
       },
       body: JSON.stringify(reqBody),
     });
-
     return `${data.values.length} items are pushed`;
   } catch (err) {
     console.error(err.message);
