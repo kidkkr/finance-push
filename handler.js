@@ -5,7 +5,7 @@ const fetch = require("isomorphic-fetch");
 
 function formatValues(values) {
   return values
-    .map(([name, _, price, change]) => `[${name}]\n${price}\n${change}$`)
+    .map(([name, _, price, change]) => `[${name}]\n${price}\n${change}`)
     .join("\n\n");
 }
 
